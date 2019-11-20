@@ -96,19 +96,33 @@ domain;Header and description
         (at ?stack ?dock)
         ;el nivel correspondiente no está ocupado
         (not (on-level-stack ? ?level ?stack))
-        ;el nivel anterior está ocupado o no hay nivel anterios
-        (or
-            (and 
-                (on-level-stack ?prevContainer ?prevLevel ?stack)
-                (next ?prevLevel ?level)
-            )
-            (not (next ? ?level))
-        )
+        ;el nivel anterior está ocupado
+        (on-level-stack ?prevContainer ?prevLevel ?stack)
+        (next ?prevLevel ?level)
     )
     :effect (and 
         (not (on ?container ?crane))
         (on-level-stack ?container ?level ?stack)
         (not (free ?prevContainer))
+    )
+)
+
+(:action put-on-ground
+    :parameters (?crane - crane ?stack - stack ?level - level ?container - container ?dock - dock)
+    :precondition (and 
+        ;container en grua
+        (on ?container ?crane)
+        ;grua y stack en el puerto correcto
+        (at ?crane ?dock)
+        (at ?stack ?dock)
+        ;el nivel correspondiente no está ocupado
+        (not (on-level-stack ? ?level ?stack))
+        ;no hay nivel anterios
+        (not (next ? ?level))
+    )
+    :effect (and 
+        (not (on ?container ?crane))
+        (on-level-stack ?container ?level ?stack)
     )
 )
 

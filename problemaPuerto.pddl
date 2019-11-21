@@ -16,7 +16,6 @@
         (at crane1 dock1)
         (at crane2 dock2)
         ; Tema Niveles
-        (next l0 l1)
         (next l1 l2)
         (next l2 l3)
     )

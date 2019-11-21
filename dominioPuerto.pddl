@@ -16,7 +16,6 @@ domain;Header and description
             (on ?c1 - container ?c2 - (either crane band))
             (on-level-stack ?c - container ?l - level ?s - stack)
             (at ?c1 - (either container crane stack) ?d - dock)
-            (free ?c - container)
             (next ?l1 - level ?l2 - level)
             (is-objective ?c - container)
             ; Dirección de la cinta b
@@ -25,28 +24,24 @@ domain;Header and description
 
 ;; ACTIONS
 (:action take-from-stack
-    :parameters (?crane - crane ?container - container ?c2 - container ?stack - stack ?l1 - level ?l2 - level)
+    :parameters (?crane - crane ?container - container ?stack - stack ?l1 - level ?l2 - level)
     :precondition (and 
-        ;La grua no este ocupada
+        ;La grua no esta ocupada
         (not (on ? ?crane))
-        ;Instanciar un container libre
-        (free ?container)
-        ;Instanciar su nivel y stack
+        ;Obtener niveles por orden
+        (next ?l1 ?l2)
+        ;El container no tiene ningún container arriba
+        (not (on-level-stack ? ?l2 ?stack))
+        ;Asegurar que hay un container en dicho nivel y stack
         (on-level-stack ?container ?l1 ?stack)
-        ;Sacar el nivel anterior en la stack, y averiguar el container de abajo
-        (next ?l2 ?l1)
-        (on-level-stack ?c2 ?l2 ?stack)
-        ;Compruebo que el dock sea el mismo para la grua y el container
+        ;Compruebo que el dock sea el mismo para la grua, el container y el stack
         (at ?container ?dock)
         (at ?crane ?dock)
+        (at ?stack ?dock)
     )
     :effect (and 
         ; Se desocupa donde estuviese el container
         (not (on-level-stack ?container ?l1 ?stack))
-        ;Ya no esta libre porque esta en la grua
-        (not (free ?container))
-        ;El contenedor anterior es el que se queda libre
-        (free ?c2)
         ;Se ocupa la grua correspondiente
         (on ?container ?crane)
     )

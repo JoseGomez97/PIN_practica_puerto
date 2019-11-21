@@ -5,7 +5,7 @@
         band1 band2 - band
         dock1 dock2 - dock
         crane1 crane2 - crane
-        c1 c2 c3 c4 c5 c6 - container
+        c1 c2 c3 c4 c5 c6 c7 c8 c9 c10- container
         s1 s2 s3 - stack
         l1 l2 l3 - level
     )

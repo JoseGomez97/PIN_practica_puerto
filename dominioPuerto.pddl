@@ -52,6 +52,32 @@ domain;Header and description
     )
 )
 
+(:action take-from-ground
+    :parameters (?crane - crane ?container - container ?stack - stack ?l1 - level ?l2 - level)
+    :precondition (and 
+        ;La grua no este ocupada
+        (not (on ? ?crane))
+        ;Instanciar un container libre
+        (free ?container)
+        ;Instanciar su nivel y stack
+        (on-level-stack ?container ?l1 ?stack)
+        ;Sacar el nivel anterior en la stack, y averiguar el container de abajo
+        (next ?l2 ?l1)
+        (not (on-level-stack ? ?l2 ?stack))
+        ;Compruebo que el dock sea el mismo para la grua y el container
+        (at ?container ?dock)
+        (at ?crane ?dock)
+    )
+    :effect (and 
+        ; Se desocupa donde estuviese el container
+        (not (on-level-stack ?container ?l1 ?stack))
+        ;Ya no esta libre porque esta en la grua
+        (not (free ?container))
+        ;Se ocupa la grua correspondiente
+        (on ?container ?crane)
+    )
+)
+
 (:action take-from-band
     :parameters (?crane - crane ?container - container ?c2 - container ?stack - stack ?l1 - level ?l2 - level)
     :precondition (and 

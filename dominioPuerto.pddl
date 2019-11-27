@@ -242,6 +242,7 @@ domain;Header and description
         (next ?l2 ?l1)
         (on-level-stack ?c2 ?l2 ?stack)
         (is-objective ?c2)
+        (not (free ?c2))
         (at ?container ?dock)
         (at ?c2 ?dock)
         (at ?stack ?dock)

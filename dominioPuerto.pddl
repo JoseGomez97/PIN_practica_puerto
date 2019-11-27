@@ -1,4 +1,4 @@
-domain;Header and description
+;Header and description
 
 (define (domain puerto)
 
@@ -13,45 +13,47 @@ domain;Header and description
 ;(:constants )
 
 (:predicates ;define predicates here
-            (on ?c1 - container ?c2 - (either crane band))
-            (on-level-stack ?c - container ?l - level ?s - stack)
-            (at ?c1 - (either container crane stack) ?d - dock)
+            (on ?c1 - container ?c2 - (either crane band)) ;obtener contenedor en grua o cinta
+            (free ?c - (either crane band container)) ;ocupado container, grua o cinta
+            (on-lsd ?c - container ?l - level ?s - stack ?d - dock) ;obtener contenedor posición
+            (free-lsd ?l - level ?s - stack ?d - dock) ;ocupado nivel de cierto stack en dock
+            (at ?c1 - (either container crane) ?d - dock) ;dock del contenedor
             (next ?l1 - level ?l2 - level)
+            (top ?l - level) ;indica si está arriba del todo
             (is-objective ?c - container)
-            (free ?c - container)
             ; Dirección de la cinta b
             (direction ?b - band ?origen - dock ?destino - dock)
 )
 
 ;; ACTIONS
 (:action take-from-top-stack
-    :parameters (?crane - crane ?container - container ?prevContainer - container ?stack - stack ?l0 - level ?l1 - level)
+    :parameters (?crane - crane ?dock -dock ?container - container ?prevContainer - container ?stack - stack ?l0 - level ?l1 - level)
     :precondition (and 
         ;la grua no esta ocupada
-        (not (on ? ?crane))
+        (free ?crane)
+        ;obtenemos dock de la grua
+        (at ?crane ?dock)
         ;obtener niveles por orden
         (next ?l0 ?l1)
-        (not (next ?l1 ?))
-        ;asegurar que hay un container en dicho nivel y stack
-        (on-level-stack ?container ?l1 ?stack)
+        (top ?l1)
+        ;asegurar que hay un container en dicho nivel, stack y dock 
+        (on-lsd ?container ?l1 ?stack ?dock)
         ;obtenemos el container de abajo
-        (on-level-stack ?prevContainer ?l0 ?stack)
-        ;compruebo que el dock sea el mismo para la grua, el container y el stack
-        (at ?container ?dock)
-        (at ?crane ?dock)
-        (at ?stack ?dock)
+        (on-lsd ?prevContainer ?l0 ?stack ?dock)
     )
     :effect (and 
         ;se desocupa donde estuviese el container
-        (not (on-level-stack ?container ?l1 ?stack))
+        (free-lsd ?l1 ?stack ?dock)
+        (not (on-lsd ?container ?l1 ?stack ?dock))
         ;se ocupa la grua correspondiente
+        (not (free ?crane))
         (on ?container ?crane)
         
         (free ?prevContainer)
         (not (free ?container))
     )
 )
-
+;TODO
 (:action take-from-mid-stack
     :parameters (?crane - crane ?container - container ?prevContainer -container ?stack - stack ?l0 - level ?l1 - level ?l2 - level)
     :precondition (and 
@@ -81,7 +83,7 @@ domain;Header and description
         (not (free ?container))
     )
 )
-
+;TODO
 (:action take-from-ground
     :parameters (?crane - crane ?container - container ?stack - stack ?l1 - level ?l2 - level)
     :precondition (and 
@@ -109,7 +111,7 @@ domain;Header and description
         (not (free ?container))
     )
 )
-
+;TODO
 (:action take-from-band
     :parameters (?crane - crane ?container - container ?stack - stack ?level - level)
     :precondition (and 
@@ -127,7 +129,7 @@ domain;Header and description
     )
 )
 
-
+;TODO
 (:action put-on-band
     :parameters (?crane - crane ?container - container ?band - band ?dock - dock)
     :precondition (and 
@@ -146,7 +148,7 @@ domain;Header and description
         (on ?container ?band)
     )
 )
-
+;TODO
 (:action put-on-top-stack
     :parameters (?crane - crane ?stack - stack ?l0 - level ?l1 - level ?l2 - level ?prevCont0 - container ?prevCont1 - container ?container - container ?dock - dock)
     :precondition (and 
@@ -170,10 +172,10 @@ domain;Header and description
 
         (not (free ?prevCont0))
         (not (free ?prevCont1))
-        (free ?container))
+        (free ?container)
     )
 )
-
+;TODO
 (:action put-on-mid-stack
     :parameters (?crane - crane ?stack - stack ?level - level ?prevLevel - level ?prevContainer - container ?container - container ?dock - dock)
     :precondition (and 
@@ -198,7 +200,7 @@ domain;Header and description
         (free ?container)
     )
 )
-
+;TODO
 (:action put-on-ground
     :parameters (?crane - crane ?stack - stack ?level - level ?container - container ?dock - dock)
     :precondition (and 
@@ -219,7 +221,7 @@ domain;Header and description
         (free ?container)
     )
 )
-
+;TODO
 (:action trasport
     :parameters (?band - band ?d1 - dock ?d2 - dock ?container - container)
     :precondition (and
@@ -227,11 +229,11 @@ domain;Header and description
         (on ?container ?band)
     )
     :effect (and 
-        (not (at ?container ?d1)
+        (not (at ?container ?d1))
         (at ?container ?d2)
     )
 )
-
+;TODO
 (:action down-is-free-too
     ;metodo para saber si un bloque de abajo 
     :parameters (?container - container ?c2 - container ?stack - stack ?l1 - level ?l2 - level ?dock - dock)
@@ -250,4 +252,6 @@ domain;Header and description
     :effect (and 
         (free ?c2)
     )
+)
+
 )

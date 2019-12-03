@@ -272,31 +272,55 @@
 
 
 
-;OJO a lo que se viene
+; Estos son posibles métodos, que puede reducir take-from-top/mid-stack y put-from-top/mid-stack en solo un método
 
-(:action take-general
-    :parameters (?crane - crane ?container - container ?stack - stack ?l1 - level ?l2 - level ?dock - dock)
+(:action take-from-stack
+    :parameters (?crane - crane ?container - container ?prevContainer - container ?stack - stack ?l1 - level ?l2 - level ?dock - dock)
     :precondition (and 
         ;La grua no esta ocupada
         (free ?crane)
         (at ?crane ?dock)
+        (free ?container)
         (on-lsd ?container ?l1 ?stack ?dock)
         ;Obtenemos el siguiente nivel
-        (next ?l1 ?l2)
-        (free-lsd ?l2 ?stack ?dock)
+        (next ?l2 ?l1)
+        (on-lsd ?prevContainer ?l2 ?stack ?dock)
     )
     :effect (and 
         ; Se desocupa donde estuviese el container
         (free-lsd ?l1 ?stack ?dock)
         (not (on-lsd ?container ?l1 ?stack ?dock))
+        ;poner a free el anterior container
+        (not(free ?container))
+        (free ?prevContainer)
         ;Se ocupa la grua correspondiente
         (on ?container ?crane)
-
         (not (free ?crane))
     )
 )
 
 
+(:action put-on-stack
+    :parameters (?crane - crane ?stack - stack ?level - level ?prevLevel - level ?prevContainer - container ?container - container ?dock - dock)
+    :precondition (and 
+        ;container en grua
+        (on ?container ?crane)
+        (at ?crane ?dock)
+        ;obtenemos los niveles, el libre que va a ser ocupado, y el anterior que tendra el free del container
+        (free ?prevContainer)
+        (on-lsd ?prevContainer ?prevLevel ?stack ?dock)
+        (next ?prevLevel ?level)
+    )
+    :effect (and 
+        (not (on ?container ?crane))
+        (free ?crane)
 
+        (not(free-lsd ?level ?stack ?dock))
+        (on-lsd ?container ?level ?stack ?dock)
+
+        (not(free ?prevContainer))
+        (free ?container)
+    )
+)
 
 )

@@ -27,7 +27,7 @@
 
 ;; ACTIONS
 (:action take-from-top-stack
-    :parameters (?crane - crane ?dock -dock ?container - container ?prevContainer - container ?stack - stack ?l0 - level ?l1 - level)
+    :parameters (?crane - crane ?dock - dock ?container - container ?prevContainer - container ?stack - stack ?l0 - level ?l1 - level)
     :precondition (and 
         ;la grua no esta ocupada
         (free ?crane)
@@ -36,7 +36,7 @@
         ;obtener niveles por orden
         (next ?l0 ?l1)
         (top ?l1)
-        ;asegurar que hay un container en dicho nivel, stack y dock 
+        ;asegurar que hay un container en dicho nivel, stack y dock
         (on-lsd ?container ?l1 ?stack ?dock)
         ;obtenemos el container de abajo
         (on-lsd ?prevContainer ?l0 ?stack ?dock)

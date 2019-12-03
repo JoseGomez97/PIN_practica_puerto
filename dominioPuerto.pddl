@@ -58,7 +58,7 @@
 ;DONEte (supuestamente): dudoso de si tiene utilidad, si es por diferenciar cuando es top de las otras veces que es free solo, simplemente se puede quitar 
 ;de la anterior el (top ?l1) y poner (free ?container) y funcionaria para los dos casos
 (:action take-from-mid-stack
-    :parameters (?crane - crane ?container - container ?prevContainer -container ?stack - stack ?l0 - level ?l1 - level)
+    :parameters (?crane - crane ?container - container ?prevContainer -container ?stack - stack ?l0 - level ?l1 - level ?dock - dock)
     :precondition (and 
         ;la grua no esta ocupada
         (free ?crane)
@@ -86,7 +86,7 @@
 )
 ;DONEte (supuestamente)
 (:action take-from-ground
-    :parameters (?crane - crane ?container - container ?stack - stack ?l1 - level ?l2 - level)
+    :parameters (?crane - crane ?container - container ?stack - stack ?l1 - level ?l2 - level ?dock - dock)
     :precondition (and 
         ;La grua no esta ocupada
         (free ?crane)
@@ -118,7 +118,7 @@
 
 ;DONEte (supuestamente)
 (:action take-from-band
-    :parameters (?crane - crane ?container - container ?stack - stack ?level - level)
+    :parameters (?band - band ?crane - crane ?container - container ?stack - stack ?level - level ?dock - dock)
     :precondition (and 
         ;La grua no esta ocupada
         (free ?crane)
@@ -176,8 +176,8 @@
         (next ?l1 ?l2)
         (next ?l0 ?l1)
         ;obtenemos los otros containers
-        (on-lsd ?prevCont1 ?l1 ?stack ?dock)
-        (on-lsd ?prevCont2 ?l0 ?stack ?dock)
+        (on-lsd ?prevCont0 ?l1 ?stack ?dock)
+        (on-lsd ?prevCont1 ?l0 ?stack ?dock)
     )
     :effect (and 
         (not (on ?container ?crane))
@@ -253,23 +253,50 @@
     )
 )
 ;TODO
-; (:action down-is-free-too
-;     ;metodo para saber si un bloque de abajo 
-;     :parameters (?container - container ?c2 - container ?stack - stack ?l1 - level ?l2 - level ?dock - dock)
-;     :precondition (and
-;         (is-objective ?container)
-;         (free ?container)
-;         (on-level-stack ?container ?l1 ?stack)
-;         (next ?l2 ?l1)
-;         (on-level-stack ?c2 ?l2 ?stack)
-;         (is-objective ?c2)
-;         (not (free ?c2))
-;         (at ?container ?dock)
-;         (at ?c2 ?dock)
-;         (at ?stack ?dock)
-;     )
-;     :effect (and 
-;         (free ?c2)
-;     )
-;)
+(:action down-is-free-too
+    ;metodo para saber si un bloque de abajo 
+    :parameters (?container - container ?c2 - container ?stack - stack ?l1 - level ?l2 - level ?dock - dock)
+    :precondition (and
+        (is-objective ?container)
+        (free ?container)
+        (on-lsd ?container ?l1 ?stack ?dock)
+        (next ?l2 ?l1)
+        (on-lsd ?c2 ?l2 ?stack ?dock)
+        (is-objective ?c2)
+    )
+    :effect (and 
+        (free ?c2)
+    )
+)
+
+
+
+
+;OJO a lo que se viene
+
+(:action take-general
+    :parameters (?crane - crane ?container - container ?stack - stack ?l1 - level ?l2 - level ?dock - dock)
+    :precondition (and 
+        ;La grua no esta ocupada
+        (free ?crane)
+        (at ?crane ?dock)
+        (on-lsd ?container ?l1 ?stack ?dock)
+        ;Obtenemos el siguiente nivel
+        (next ?l1 ?l2)
+        (free-lsd ?l2 ?stack ?dock)
+    )
+    :effect (and 
+        ; Se desocupa donde estuviese el container
+        (free-lsd ?l1 ?stack ?dock)
+        (not (on-lsd ?container ?l1 ?stack ?dock))
+        ;Se ocupa la grua correspondiente
+        (on ?container ?crane)
+
+        (not (free ?crane))
+    )
+)
+
+
+
+
 )

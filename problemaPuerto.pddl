@@ -13,7 +13,9 @@
     (:init
         ; Cintas
         (direction band1 dock1 dock2)
+        (free band1)
         (direction band2 dock2 dock1)
+        (free band2)
         ; Posición gruas
         (at crane1 dock1)
         (at crane2 dock2)

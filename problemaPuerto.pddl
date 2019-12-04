@@ -25,7 +25,6 @@
         (first l1)
         (next l1 l2)
         (next l2 l3)
-        (top l3)
         ; Tema containers
         (at c1 dock1)
         (at c2 dock2)

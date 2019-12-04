@@ -14,76 +14,18 @@
 
 (:predicates ;define predicates here
             (on ?c1 - container ?c2 - (either crane band)) ;obtener contenedor en grua o cinta
-            (free ?c - (either crane band container)) ;ocupado container, grua o cinta
+            (free ?c - (either crane band container)) ;libre container, grua o cinta
             (on-lsd ?c - container ?l - level ?s - stack ?d - dock) ;obtener contenedor posición
-            (free-lsd ?l - level ?s - stack ?d - dock) ;ocupado nivel de cierto stack en dock
+            (free-lsd ?l - level ?s - stack ?d - dock) ;libre nivel de cierto stack en dock
             (at ?c1 - (either container crane) ?d - dock) ;dock del contenedor
             (next ?l1 - level ?l2 - level)
             (first ?l - level) ;nivel a ras de tierra, para los ground
-            (top ?l - level) ;indica si está arriba del todo
             (is-objective ?c - container)
             ; Dirección de la cinta b
             (direction ?b - band ?origen - dock ?destino - dock)
 )
 
 ;; ACTIONS
-; (:action take-from-top-stack
-;     :parameters (?crane - crane ?dock - dock ?container - container ?prevContainer - container ?stack - stack ?l0 - level ?l1 - level)
-;     :precondition (and 
-;         ;la grua no esta ocupada
-;         (free ?crane)
-;         ;obtenemos dock de la grua
-;         (at ?crane ?dock)
-;         ;obtener niveles por orden
-;         (next ?l0 ?l1)
-;         (top ?l1);aun no ze zabe si con (free ?container) podria cubrir tmb el siguiente método
-;         ;asegurar que hay un container en dicho nivel, stack y dock
-;         (on-lsd ?container ?l1 ?stack ?dock)
-;         ;obtenemos el container de abajo
-;         (on-lsd ?prevContainer ?l0 ?stack ?dock)
-;     )
-;     :effect (and 
-;         ;se desocupa donde estuviese el container
-;         (free-lsd ?l1 ?stack ?dock)
-;         (not (on-lsd ?container ?l1 ?stack ?dock))
-;         ;se ocupa la grua correspondiente
-;         (not (free ?crane))
-;         (on ?container ?crane)
-        
-;         (free ?prevContainer)
-;         (not (free ?container))
-;     )
-; )
-;DONEte (supuestamente): dudoso de si tiene utilidad, si es por diferenciar cuando es top de las otras veces que es free solo, simplemente se puede quitar 
-;de la anterior el (top ?l1) y poner (free ?container) y funcionaria para los dos casos
-; (:action take-from-mid-stack
-;     :parameters (?crane - crane ?container - container ?prevContainer -container ?stack - stack ?l0 - level ?l1 - level ?dock - dock)
-;     :precondition (and 
-;         ;la grua no esta ocupada
-;         (free ?crane)
-;         (at ?crane ?dock)
-;         ;obtener niveles por orden
-;         (next ?l0 ?l1)
-;         ;el container no tiene ningún container arriba
-;         (free ?container)
-;         ;asegurar que hay un container en dicho nivel y stack
-;         (on-lsd ?container ?l1 ?stack ?dock)
-;         ;obtenemos el container de abajo
-;         (on-lsd ?prevContainer ?l0 ?stack ?dock)
-;     )
-;     :effect (and 
-;         ;se desocupa donde estuviese el container
-;         (free-lsd ?l1 ?stack ?dock)
-;         (not (on-lsd ?container ?l1 ?stack ?dock))
-;         ;se ocupa la grua correspondiente
-;         (not (free ?crane))
-;         (on ?container ?crane)
-        
-;         (free ?prevContainer)
-;         (not (free ?container))
-;     )
-; )
-
 
 (:action take-from-stack
     :parameters (?crane - crane ?container - container ?prevContainer - container ?stack - stack ?l1 - level ?l2 - level ?dock - dock)

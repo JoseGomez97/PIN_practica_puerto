@@ -52,7 +52,6 @@
         
         (free ?prevContainer)
         (not (free ?container))
-        (not (free ?crane))
     )
 )
 ;DONEte (supuestamente): dudoso de si tiene utilidad, si es por diferenciar cuando es top de las otras veces que es free solo, simplemente se puede quitar 
@@ -77,11 +76,11 @@
         (free-lsd ?l1 ?stack ?dock)
         (not (on-lsd ?container ?l1 ?stack ?dock))
         ;se ocupa la grua correspondiente
+        (not (free ?crane))
         (on ?container ?crane)
         
         (free ?prevContainer)
         (not (free ?container))
-        (not (free ?crane))
     )
 )
 ;DONEte (supuestamente)
@@ -105,10 +104,10 @@
         (free-lsd ?l1 ?stack ?dock)
         (not (on-lsd ?container ?l1 ?stack ?dock))
         ;Se ocupa la grua correspondiente
+        (not (free ?crane))
         (on ?container ?crane)
         
         (not (free ?container))
-        (not (free ?crane))
     )
 )
 

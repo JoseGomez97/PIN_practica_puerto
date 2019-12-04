@@ -41,32 +41,37 @@
         (on-lsd c1 l1 s1 dock1)
         (on-lsd c7 l2 s1 dock1)
         (free-lsd l3 s1 dock1)
+        (free c7)
         ; s2
         (on-lsd c9 l1 s2 dock1)
         (on-lsd c10 l2 s2 dock1)
         (free-lsd l3 s2 dock1)
+        (free c10)
         ; s3
         (on-lsd c11 l1 s3 dock1)
         (free-lsd l2 s3 dock1)
         (free-lsd l3 s3 dock1)
+        (free c11)
         ;Stacks dock2
         ; s1
         (on-lsd c4 l1 s1 dock2)
         (on-lsd c8 l2 s1 dock2)
         (free-lsd l3 s1 dock2)
+        (free c8)
         ; s2
         (on-lsd c5 l1 s2 dock2)
         (on-lsd c3 l2 s2 dock2)
         (on-lsd c2 l3 s2 dock2)
+        (free c2)
         ;s3
         (on-lsd c6 l1 s3 dock2)
         (free-lsd l2 s3 dock2)
         (free-lsd l3 s3 dock2)
+        (free c6)
         ; Contenedores Objetivos
         (is-objective c3)
         (is-objective c4)
         (is-objective c7)
-        (free c7)
     )
 
     (:goal 

@@ -27,62 +27,62 @@
 )
 
 ;; ACTIONS
-(:action take-from-top-stack
-    :parameters (?crane - crane ?dock - dock ?container - container ?prevContainer - container ?stack - stack ?l0 - level ?l1 - level)
-    :precondition (and 
-        ;la grua no esta ocupada
-        (free ?crane)
-        ;obtenemos dock de la grua
-        (at ?crane ?dock)
-        ;obtener niveles por orden
-        (next ?l0 ?l1)
-        (top ?l1);aun no ze zabe si con (free ?container) podria cubrir tmb el siguiente método
-        ;asegurar que hay un container en dicho nivel, stack y dock
-        (on-lsd ?container ?l1 ?stack ?dock)
-        ;obtenemos el container de abajo
-        (on-lsd ?prevContainer ?l0 ?stack ?dock)
-    )
-    :effect (and 
-        ;se desocupa donde estuviese el container
-        (free-lsd ?l1 ?stack ?dock)
-        (not (on-lsd ?container ?l1 ?stack ?dock))
-        ;se ocupa la grua correspondiente
-        (not (free ?crane))
-        (on ?container ?crane)
+; (:action take-from-top-stack
+;     :parameters (?crane - crane ?dock - dock ?container - container ?prevContainer - container ?stack - stack ?l0 - level ?l1 - level)
+;     :precondition (and 
+;         ;la grua no esta ocupada
+;         (free ?crane)
+;         ;obtenemos dock de la grua
+;         (at ?crane ?dock)
+;         ;obtener niveles por orden
+;         (next ?l0 ?l1)
+;         (top ?l1);aun no ze zabe si con (free ?container) podria cubrir tmb el siguiente método
+;         ;asegurar que hay un container en dicho nivel, stack y dock
+;         (on-lsd ?container ?l1 ?stack ?dock)
+;         ;obtenemos el container de abajo
+;         (on-lsd ?prevContainer ?l0 ?stack ?dock)
+;     )
+;     :effect (and 
+;         ;se desocupa donde estuviese el container
+;         (free-lsd ?l1 ?stack ?dock)
+;         (not (on-lsd ?container ?l1 ?stack ?dock))
+;         ;se ocupa la grua correspondiente
+;         (not (free ?crane))
+;         (on ?container ?crane)
         
-        (free ?prevContainer)
-        (not (free ?container))
-    )
-)
+;         (free ?prevContainer)
+;         (not (free ?container))
+;     )
+; )
 ;DONEte (supuestamente): dudoso de si tiene utilidad, si es por diferenciar cuando es top de las otras veces que es free solo, simplemente se puede quitar 
 ;de la anterior el (top ?l1) y poner (free ?container) y funcionaria para los dos casos
-(:action take-from-mid-stack
-    :parameters (?crane - crane ?container - container ?prevContainer -container ?stack - stack ?l0 - level ?l1 - level ?dock - dock)
-    :precondition (and 
-        ;la grua no esta ocupada
-        (free ?crane)
-        (at ?crane ?dock)
-        ;obtener niveles por orden
-        (next ?l0 ?l1)
-        ;el container no tiene ningún container arriba
-        (free ?container)
-        ;asegurar que hay un container en dicho nivel y stack
-        (on-lsd ?container ?l1 ?stack ?dock)
-        ;obtenemos el container de abajo
-        (on-lsd ?prevContainer ?l0 ?stack ?dock)
-    )
-    :effect (and 
-        ;se desocupa donde estuviese el container
-        (free-lsd ?l1 ?stack ?dock)
-        (not (on-lsd ?container ?l1 ?stack ?dock))
-        ;se ocupa la grua correspondiente
-        (not (free ?crane))
-        (on ?container ?crane)
+; (:action take-from-mid-stack
+;     :parameters (?crane - crane ?container - container ?prevContainer -container ?stack - stack ?l0 - level ?l1 - level ?dock - dock)
+;     :precondition (and 
+;         ;la grua no esta ocupada
+;         (free ?crane)
+;         (at ?crane ?dock)
+;         ;obtener niveles por orden
+;         (next ?l0 ?l1)
+;         ;el container no tiene ningún container arriba
+;         (free ?container)
+;         ;asegurar que hay un container en dicho nivel y stack
+;         (on-lsd ?container ?l1 ?stack ?dock)
+;         ;obtenemos el container de abajo
+;         (on-lsd ?prevContainer ?l0 ?stack ?dock)
+;     )
+;     :effect (and 
+;         ;se desocupa donde estuviese el container
+;         (free-lsd ?l1 ?stack ?dock)
+;         (not (on-lsd ?container ?l1 ?stack ?dock))
+;         ;se ocupa la grua correspondiente
+;         (not (free ?crane))
+;         (on ?container ?crane)
         
-        (free ?prevContainer)
-        (not (free ?container))
-    )
-)
+;         (free ?prevContainer)
+;         (not (free ?container))
+;     )
+; )
 ;DONEte (supuestamente)
 (:action take-from-ground
     :parameters (?crane - crane ?container - container ?stack - stack ?l1 - level ?l2 - level ?dock - dock)
@@ -161,61 +161,61 @@
 ;al igual que cada (not(free/free-lsd)), le tiene que acompañar un (on/on-lsd) *esto último no se cumple SOLO cuando se mete un contenedor directamente en el suelo
 
 ;DONEte (supuestamente)
-(:action put-on-top-stack
-    :parameters (?crane - crane ?stack - stack ?l0 - level ?l1 - level ?l2 - level ?prevCont0 - container ?prevCont1 - container ?container - container ?dock - dock)
-    :precondition (and 
-        ;container en grua
-        (on ?container ?crane)
-        ;grua y stack en el puerto correcto
-        (at ?crane ?dock)
-        ;el nivel correspondiente no está ocupado y es top
-        (free-lsd ?l2 ?stack ?dock)
-        (top ?l2)
-        ;se averigua los nivele anteriores
-        (next ?l1 ?l2)
-        (next ?l0 ?l1)
-        ;obtenemos los otros containers
-        (on-lsd ?prevCont0 ?l1 ?stack ?dock)
-        (on-lsd ?prevCont1 ?l0 ?stack ?dock)
-    )
-    :effect (and 
-        (not (on ?container ?crane))
-        (free ?crane)
+; (:action put-on-top-stack
+;     :parameters (?crane - crane ?stack - stack ?l0 - level ?l1 - level ?l2 - level ?prevCont0 - container ?prevCont1 - container ?container - container ?dock - dock)
+;     :precondition (and 
+;         ;container en grua
+;         (on ?container ?crane)
+;         ;grua y stack en el puerto correcto
+;         (at ?crane ?dock)
+;         ;el nivel correspondiente no está ocupado y es top
+;         (free-lsd ?l2 ?stack ?dock)
+;         (top ?l2)
+;         ;se averigua los nivele anteriores
+;         (next ?l1 ?l2)
+;         (next ?l0 ?l1)
+;         ;obtenemos los otros containers
+;         (on-lsd ?prevCont0 ?l1 ?stack ?dock)
+;         (on-lsd ?prevCont1 ?l0 ?stack ?dock)
+;     )
+;     :effect (and 
+;         (not (on ?container ?crane))
+;         (free ?crane)
 
-        (on-lsd ?container ?l2 ?stack ?dock)
-        (not(free-lsd ?l2 ?stack ?dock))
-        ;estos dos siguientes no los toco, pero no se porque los has puesto :(
-        ;desduzco que por lo del problema de que cuando ponias los objetivos a free's y todo eso, se quedaban a veces free's de mas
-        (not (free ?prevCont0))
-        (not (free ?prevCont1))
-        (free ?container)
-    )
-)
+;         (on-lsd ?container ?l2 ?stack ?dock)
+;         (not(free-lsd ?l2 ?stack ?dock))
+;         ;estos dos siguientes no los toco, pero no se porque los has puesto :(
+;         ;desduzco que por lo del problema de que cuando ponias los objetivos a free's y todo eso, se quedaban a veces free's de mas
+;         (not (free ?prevCont0))
+;         (not (free ?prevCont1))
+;         (free ?container)
+;     )
+; )
 ;DONEte (supuestamente)
-(:action put-on-mid-stack
-    :parameters (?crane - crane ?stack - stack ?level - level ?prevLevel - level ?prevContainer - container ?container - container ?dock - dock)
-    :precondition (and 
-        ;container en grua
-        (on ?container ?crane)
-        ;grua y stack en el puerto correcto
-        (at ?crane ?dock)
-        ;obtenemos los niveles, el libre que va a ser ocupado, y el anterior que tendra el free del container
-        (free-lsd ?level ?stack ?dock)
-        (next ?prevLevel ?level)
-        ;el nivel anterior está ocupado y sacamos su container para ponerle luego el free
-        (on-lsd ?prevContainer ?prevLevel ?stack ?dock)
-    )
-    :effect (and 
-        (not (on ?container ?crane))
-        (free ?crane)
+; (:action put-on-mid-stack
+;     :parameters (?crane - crane ?stack - stack ?level - level ?prevLevel - level ?prevContainer - container ?container - container ?dock - dock)
+;     :precondition (and 
+;         ;container en grua
+;         (on ?container ?crane)
+;         ;grua y stack en el puerto correcto
+;         (at ?crane ?dock)
+;         ;obtenemos los niveles, el libre que va a ser ocupado, y el anterior que tendra el free del container
+;         (free-lsd ?level ?stack ?dock)
+;         (next ?prevLevel ?level)
+;         ;el nivel anterior está ocupado y sacamos su container para ponerle luego el free
+;         (on-lsd ?prevContainer ?prevLevel ?stack ?dock)
+;     )
+;     :effect (and 
+;         (not (on ?container ?crane))
+;         (free ?crane)
 
-        (not(free-lsd ?level ?stack ?dock))
-        (on-lsd ?container ?level ?stack ?dock)
+;         (not(free-lsd ?level ?stack ?dock))
+;         (on-lsd ?container ?level ?stack ?dock)
 
-        (not (free ?prevContainer))
-        (free ?container)
-    )
-)
+;         (not (free ?prevContainer))
+;         (free ?container)
+;     )
+; )
 ;DONEte (supuestamente)
 (:action put-on-ground
     :parameters (?crane - crane ?stack - stack ?level - level ?container - container ?dock - dock)
@@ -273,53 +273,53 @@
 
 ; Estos son posibles métodos, que puede reducir take-from-top/mid-stack y put-from-top/mid-stack en solo un método
 
-; (:action take-from-stack
-;     :parameters (?crane - crane ?container - container ?prevContainer - container ?stack - stack ?l1 - level ?l2 - level ?dock - dock)
-;     :precondition (and 
-;         ;La grua no esta ocupada
-;         (free ?crane)
-;         (at ?crane ?dock)
-;         (free ?container)
-;         (on-lsd ?container ?l1 ?stack ?dock)
-;         ;Obtenemos el siguiente nivel
-;         (next ?l2 ?l1)
-;         (on-lsd ?prevContainer ?l2 ?stack ?dock)
-;     )
-;     :effect (and 
-;         ; Se desocupa donde estuviese el container
-;         (free-lsd ?l1 ?stack ?dock)
-;         (not (on-lsd ?container ?l1 ?stack ?dock))
-;         ;poner a free el anterior container
-;         (not(free ?container))
-;         (free ?prevContainer)
-;         ;Se ocupa la grua correspondiente
-;         (on ?container ?crane)
-;         (not (free ?crane))
-;     )
-; )
+(:action take-from-stack
+    :parameters (?crane - crane ?container - container ?prevContainer - container ?stack - stack ?l1 - level ?l2 - level ?dock - dock)
+    :precondition (and 
+        ;La grua no esta ocupada
+        (free ?crane)
+        (at ?crane ?dock)
+        (free ?container)
+        (on-lsd ?container ?l1 ?stack ?dock)
+        ;Obtenemos el siguiente nivel
+        (next ?l2 ?l1)
+        (on-lsd ?prevContainer ?l2 ?stack ?dock)
+    )
+    :effect (and 
+        ; Se desocupa donde estuviese el container
+        (free-lsd ?l1 ?stack ?dock)
+        (not (on-lsd ?container ?l1 ?stack ?dock))
+        ;poner a free el anterior container
+        (not(free ?container))
+        (free ?prevContainer)
+        ;Se ocupa la grua correspondiente
+        (on ?container ?crane)
+        (not (free ?crane))
+    )
+)
 
 
-; (:action put-on-stack
-;     :parameters (?crane - crane ?stack - stack ?level - level ?prevLevel - level ?prevContainer - container ?container - container ?dock - dock)
-;     :precondition (and 
-;         ;container en grua
-;         (on ?container ?crane)
-;         (at ?crane ?dock)
-;         ;obtenemos los niveles, el libre que va a ser ocupado, y el anterior que tendra el free del container
-;         (free ?prevContainer)
-;         (on-lsd ?prevContainer ?prevLevel ?stack ?dock)
-;         (next ?prevLevel ?level)
-;     )
-;     :effect (and 
-;         (not (on ?container ?crane))
-;         (free ?crane)
+(:action put-on-stack
+    :parameters (?crane - crane ?stack - stack ?level - level ?prevLevel - level ?prevContainer - container ?container - container ?dock - dock)
+    :precondition (and 
+        ;container en grua
+        (on ?container ?crane)
+        (at ?crane ?dock)
+        ;obtenemos los niveles, el libre que va a ser ocupado, y el anterior que tendra el free del container
+        (free ?prevContainer)
+        (on-lsd ?prevContainer ?prevLevel ?stack ?dock)
+        (next ?prevLevel ?level)
+    )
+    :effect (and 
+        (not (on ?container ?crane))
+        (free ?crane)
 
-;         (not(free-lsd ?level ?stack ?dock))
-;         (on-lsd ?container ?level ?stack ?dock)
+        (not(free-lsd ?level ?stack ?dock))
+        (on-lsd ?container ?level ?stack ?dock)
 
-;         (not(free ?prevContainer))
-;         (free ?container)
-;     )
-; )
+        (not(free ?prevContainer))
+        (free ?container)
+    )
+)
 
 )

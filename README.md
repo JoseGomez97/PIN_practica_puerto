@@ -6,9 +6,9 @@
 ```
 - Iniciar planificador lpg
 ```bash
-    ./lpg -o dominioPuerto.pddl -f problemaPuerto.pddl -n <numero de soluciones> -out ficheroResultado
+    ./../PLANIFICADORES/lpg -o dominioPuerto.pddl -f problemaPuerto.pddl -n <numero de soluciones> -out ficheroResultado
 ```
 - Iniciar planificado optic-clp
 ```bash
-    ./optic-clp dominioPuerto.pddl problemaPuerto.pddl
+    ./../PLANIFICADORES/optic-clp/optic-clp dominioPuerto.pddl problemaPuerto.pddl
 ```

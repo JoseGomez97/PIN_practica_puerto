@@ -53,7 +53,6 @@
 )
 
 
-;DONEte (supuestamente)
 (:action take-from-ground
     :parameters (?crane - crane ?container - container ?stack - stack ?l1 - level ?l2 - level ?dock - dock)
     :precondition (and 
@@ -81,17 +80,46 @@
     )
 )
 
-;DONEte (supuestamente)
-(:action put-on-stack
-    :parameters (?crane - crane ?stack - stack ?level - level ?prevLevel - level ?prevContainer - container ?container - container ?dock - dock)
+
+(:action put-on-top
+    :parameters (?crane - crane ?stack - stack ?l1 - level ?l2 - level ?l3 - level ?c1 - container ?c2 - container ?c3 - container ?dock - dock)
+    :precondition (and 
+        ;container en grua
+        (on ?c1 ?crane)
+        (at ?crane ?dock)
+        ;obtenemos los niveles, el libre que va a ser ocupado, y el anterior que tendra el free del container
+        (free ?c2)
+        (next ?l2 ?l1)
+        (next ?l3 ?l2)
+        (on-lsd ?c2 ?l2 ?stack ?dock)
+        (on-lsd ?c3 ?l3 ?stack ?dock)
+        (free-lsd ?l1 ?stack ?dock)
+    )
+    :effect (and 
+        (not (on ?c1 ?crane))
+        (free ?crane)
+
+        (not(free-lsd ?l1 ?stack ?dock))
+        (on-lsd ?c1 ?l1 ?stack ?dock)
+
+        (not(free ?c3))
+        (not(free ?c2))
+        (free ?c1)
+    )
+)
+
+(:action put-on-mid
+    :parameters (?crane - crane ?stack - stack ?level - level ?prevLevel - level ?postLevel - level ?prevContainer - container ?container - container ?dock - dock)
     :precondition (and 
         ;container en grua
         (on ?container ?crane)
         (at ?crane ?dock)
         ;obtenemos los niveles, el libre que va a ser ocupado, y el anterior que tendra el free del container
         (free ?prevContainer)
+        (free-lsd ?level ?stack ?dock)
         (on-lsd ?prevContainer ?prevLevel ?stack ?dock)
         (next ?prevLevel ?level)
+        (next ?level ?postLevel)
     )
     :effect (and 
         (not (on ?container ?crane))
@@ -105,7 +133,7 @@
     )
 )
 
-;DONEte (supuestamente)
+
 (:action put-on-ground
     :parameters (?crane - crane ?stack - stack ?level - level ?container - container ?dock - dock)
     :precondition (and 
@@ -129,7 +157,7 @@
     )
 )
 
-;DONEte (supuestamente)
+
 (:action take-from-band
     :parameters (?band - band ?crane - crane ?container - container ?stack - stack ?level - level ?dock - dock)
     :precondition (and 
@@ -149,7 +177,7 @@
     )
 )
 
-;DONEte (supuestamente)
+
 (:action put-on-band
     :parameters (?crane - crane ?container - container ?band - band ?dock - dock ?dock2 - dock)
     :precondition (and 
@@ -174,9 +202,9 @@
     )
 )
 
-;TODO
+
 (:action down-is-free-too
-    ;metodo para saber si un bloque de abajo 
+    ;metodo para saber si un bloque de abajo debería estar libre
     :parameters (?container - container ?c2 - container ?stack - stack ?l1 - level ?l2 - level ?dock - dock)
     :precondition (and
         (is-objective ?container)

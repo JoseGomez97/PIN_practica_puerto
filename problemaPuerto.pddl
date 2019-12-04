@@ -73,6 +73,7 @@
         (is-objective c3)
         (is-objective c4)
         (is-objective c7)
+        (is-objective c8)
     )
 
     (:goal 
@@ -80,10 +81,11 @@
             (at c3 dock1)
             (at c4 dock1)
             (at c7 dock1)
+            (at c8 dock1)
             (free c3)
             (free c4)
             (free c7)
-            
+            (free c8)
         )
     )
     ;un-comment the following line if metric is needed

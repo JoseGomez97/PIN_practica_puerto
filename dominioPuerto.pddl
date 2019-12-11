@@ -81,8 +81,8 @@
 )
 
 
-(:action put-on-top
-    :parameters (?crane - crane ?stack - stack ?l1 - level ?l2 - level ?l3 - level ?c1 - container ?c2 - container ?c3 - container ?dock - dock)
+(:action put-on-container
+    :parameters (?crane - crane ?stack - stack ?l1 - level ?l2 - level ?c1 - container ?c2 - container ?dock - dock)
     :precondition (and 
         ;container en grua
         (on ?c1 ?crane)
@@ -90,9 +90,7 @@
         ;obtenemos los niveles, el libre que va a ser ocupado, y el anterior que tendra el free del container
         (free ?c2)
         (next ?l2 ?l1)
-        (next ?l3 ?l2)
         (on-lsd ?c2 ?l2 ?stack ?dock)
-        (on-lsd ?c3 ?l3 ?stack ?dock)
         (free-lsd ?l1 ?stack ?dock)
     )
     :effect (and 
@@ -102,14 +100,13 @@
         (not(free-lsd ?l1 ?stack ?dock))
         (on-lsd ?c1 ?l1 ?stack ?dock)
 
-        (not(free ?c3))
         (not(free ?c2))
         (free ?c1)
     )
 )
 
-(:action put-on-mid
-    :parameters (?crane - crane ?stack - stack ?level - level ?prevLevel - level ?postLevel - level ?prevContainer - container ?container - container ?dock - dock)
+(:action put-green-on-green
+    :parameters (?crane - crane ?stack - stack ?level - level ?prevLevel - level ?prevContainer - container ?container - container ?dock - dock)
     :precondition (and 
         ;container en grua
         (on ?container ?crane)
@@ -119,7 +116,8 @@
         (free-lsd ?level ?stack ?dock)
         (on-lsd ?prevContainer ?prevLevel ?stack ?dock)
         (next ?prevLevel ?level)
-        (next ?level ?postLevel)
+        (is-objective ?container)
+        (is-objective ?prevContainer)
     )
     :effect (and 
         (not (on ?container ?crane))
@@ -128,7 +126,6 @@
         (not(free-lsd ?level ?stack ?dock))
         (on-lsd ?container ?level ?stack ?dock)
 
-        (not(free ?prevContainer))
         (free ?container)
     )
 )
@@ -199,23 +196,6 @@
         ;Transporte en la cinta
         (not (at ?container ?dock))
         (at ?container ?dock2)
-    )
-)
-
-
-(:action down-is-free-too
-    ;metodo para saber si un bloque de abajo debería estar libre
-    :parameters (?container - container ?c2 - container ?stack - stack ?l1 - level ?l2 - level ?dock - dock)
-    :precondition (and
-        (is-objective ?container)
-        (free ?container)
-        (on-lsd ?container ?l1 ?stack ?dock)
-        (next ?l2 ?l1)
-        (on-lsd ?c2 ?l2 ?stack ?dock)
-        (is-objective ?c2)
-    )
-    :effect (and 
-        (free ?c2)
     )
 )
 

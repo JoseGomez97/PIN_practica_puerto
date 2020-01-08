@@ -3,7 +3,7 @@
 (define (domain puerto)
 
 ;remove requirements that are not needed
-(:requirements :typing :fluents)
+(:requirements :typing :fluents :durative-actions)
 
 (:types ;enumerate types and their hierarchy here
     container dock crane band stack level
@@ -26,7 +26,6 @@
 )
 
 (:functions 
-    (total-time-used)
     (weight ?c - container)
     (time-transport ?d1 - dock ?d2 - dock)
     (time-per-height ?l - level)
@@ -35,123 +34,94 @@
 
 ;; ACTIONS
 
-(:action take-from-stack
+(:durative-action take-from-stack
     :parameters (?crane - crane ?container - container ?prevContainer - container ?stack - stack ?l1 - level ?l2 - level ?dock - dock)
-    :precondition (and 
-        ;La grua no esta ocupada
-        (free ?crane)
-        (at ?crane ?dock)
-        (free ?container)
-        (on-lsd ?container ?l1 ?stack ?dock)
-        ;Obtenemos el siguiente nivel
-        (next ?l2 ?l1)
-        (on-lsd ?prevContainer ?l2 ?stack ?dock)
+    :duration (= ?duration (* (weight ?container) (time-per-height ?l1)))
+    :condition (and 
+        (at start (free ?crane))
+        (at start (free ?container))
+        (at start (on-lsd ?container ?l1 ?stack ?dock))
+        (over all (at ?crane ?dock))
+        (over all (next ?l2 ?l1))
+        (over all (on-lsd ?prevContainer ?l2 ?stack ?dock))
     )
     :effect (and 
-        ; Se desocupa donde estuviese el container
-        (free-lsd ?l1 ?stack ?dock)
-        (not (on-lsd ?container ?l1 ?stack ?dock))
-        ;poner a free el anterior container
-        (not(free ?container))
-        (free ?prevContainer)
-        ;Se ocupa la grua correspondiente
-        (on ?container ?crane)
-        (not (free ?crane))
-        ;Dominio Temporal
-        (increase (total-time-used)
-            (* (weight ?container) (time-per-height ?l1)))
-        
+        (at start (not (free ?crane)))
+        (at start (not (free ?container)))
+        (at start (not (on-lsd ?container ?l1 ?stack ?dock)))
+        (at end (free ?prevContainer))
+        (at end (free-lsd ?l1 ?stack ?dock))
+        (at end (on ?container ?crane))          
     )
 )
 
 
-(:action take-from-ground
+(:durative-action take-from-ground
     :parameters (?crane - crane ?container - container ?stack - stack ?l1 - level ?l2 - level ?dock - dock)
-    :precondition (and 
-        ;La grua no esta ocupada
-        (free ?crane)
-        (at ?crane ?dock)
-        ;No puede tener ningún nivel antes
-        (first ?l1)
-        ;Obtenemos el siguiente nivel
-        (next ?l1 ?l2)
-        ;Tiene que haber container en dicha posición
-        (on-lsd ?container ?l1 ?stack ?dock)
-        ;No puede haber container en la siguiente posición
-        (free-lsd ?l2 ?stack ?dock)
+    :duration (= ?duration (* (weight ?container) (time-per-height ?l1)))
+    :condition (and 
+        (at start (free ?crane))
+        (at start (on-lsd ?container ?l1 ?stack ?dock))
+        (over all (at ?crane ?dock))
+        (over all (first ?l1))
+        (over all (next ?l1 ?l2))
+        (over all (free-lsd ?l2 ?stack ?dock))
     )
     :effect (and 
-        ; Se desocupa donde estuviese el container
-        (free-lsd ?l1 ?stack ?dock)
-        (not (on-lsd ?container ?l1 ?stack ?dock))
-        ;Se ocupa la grua correspondiente
-        (not (free ?crane))
-        (on ?container ?crane)
+        (at start (not (free ?crane)))
+        (at start (not (free ?container)))
+        (at start (not (on-lsd ?container ?l1 ?stack ?dock)))
+        (at end (free-lsd ?l1 ?stack ?dock))
+        (at end (on ?container ?crane))
         
-        (not (free ?container))
-        ;Dominio Temporal
-        (increase (total-time-used)
-            (* (weight ?container) (time-per-height ?l1)))
     )
 )
 
 
-(:action put-on-container
+(:durative-action put-on-container
     :parameters (?crane - crane ?stack - stack ?l1 - level ?l2 - level ?c1 - container ?c2 - container ?dock - dock)
-    :precondition (and 
-        ;container en grua
-        (on ?c1 ?crane)
-        (at ?crane ?dock)
-        ;obtenemos los niveles, el libre que va a ser ocupado, y el anterior que tendra el free del container
-        (free ?c2)
-        (next ?l2 ?l1)
-        (on-lsd ?c2 ?l2 ?stack ?dock)
-        (free-lsd ?l1 ?stack ?dock)
+    :duration (= ?duration (* (weight ?c1) (time-per-height ?l1)))
+    :condition (and 
+        (at start (on ?c1 ?crane))
+        (at start (free ?c2))
+        (at start (free-lsd ?l1 ?stack ?dock))
+        (over all (at ?crane ?dock))
+        (over all (next ?l2 ?l1))
+        (over all (on-lsd ?c2 ?l2 ?stack ?dock))
     )
     :effect (and 
-        (not (on ?c1 ?crane))
-        (free ?crane)
-
-        (not(free-lsd ?l1 ?stack ?dock))
-        (on-lsd ?c1 ?l1 ?stack ?dock)
-
-        (not(free ?c2))
-        (free ?c1)
-        ;Dominio Temporal
-        (increase (total-time-used)
-            (* (weight ?c1) (time-per-height ?l1)))
+        (at start (not (on ?c1 ?crane)))
+        (at start (not(free ?c2)))
+        (at start (not(free-lsd ?l1 ?stack ?dock)))
+        (at end (on-lsd ?c1 ?l1 ?stack ?dock))
+        (at end (free ?crane))
+        (at end (free ?c1))
     )
 )
 
-(:action put-green-on-green
+(:durative-action put-green-on-green
     :parameters (?crane - crane ?stack - stack ?level - level ?prevLevel - level ?prevContainer - container ?container - container ?dock - dock)
-    :precondition (and 
-        ;container en grua
-        (on ?container ?crane)
-        (at ?crane ?dock)
-        ;obtenemos los niveles, el libre que va a ser ocupado, y el anterior que tendra el free del container
-        (free ?prevContainer)
-        (free-lsd ?level ?stack ?dock)
-        (on-lsd ?prevContainer ?prevLevel ?stack ?dock)
-        (next ?prevLevel ?level)
-        (is-objective ?container)
-        (is-objective ?prevContainer)
+    :duration (= ?duration (* (weight ?container) (time-per-height ?level)))
+    :condition (and 
+        (at start (on ?container ?crane))
+        (at start (free ?prevContainer))
+        (at start (free-lsd ?level ?stack ?dock))
+        (over all (at ?crane ?dock))
+        (over all (on-lsd ?prevContainer ?prevLevel ?stack ?dock))
+        (over all (next ?prevLevel ?level))
+        (over all (is-objective ?container))
+        (over all (is-objective ?prevContainer))
     )
     :effect (and 
-        (not (on ?container ?crane))
-        (free ?crane)
-
-        (not(free-lsd ?level ?stack ?dock))
-        (on-lsd ?container ?level ?stack ?dock)
-
-        (free ?container)
-        ;Dominio Temporal
-        (increase (total-time-used)
-            (* (weight ?container) (time-per-height ?level)))
+        (at start (not (on ?container ?crane)))
+        (at start (not(free-lsd ?level ?stack ?dock)))
+        (at end (free ?crane))
+        (at end (on-lsd ?container ?level ?stack ?dock))
+        (at end (free ?container))
     )
 )
 
-
+;TODO
 (:action put-on-ground
     :parameters (?crane - crane ?stack - stack ?level - level ?container - container ?dock - dock)
     :precondition (and 
@@ -177,7 +147,7 @@
             (* (weight ?container) (time-per-height ?level)))
     )
 )
-
+;TODO
 (:action put-on-band
     :parameters (?crane - crane ?container - container ?band - band ?dock - dock ?dock2 - dock)
     :precondition (and 
@@ -204,7 +174,7 @@
             (* (weight ?container) (time-put-take-band ?band)))
     )
 )
-
+;TODO
 (:action take-from-band
     :parameters (?band - band ?crane - crane ?container - container ?stack - stack ?level - level ?dock - dock ?dock2 - dock)
     :precondition (and 
@@ -229,20 +199,17 @@
 )
 
 ;;NUEVA REGLA para el DOMINIO TEMPORAL
-(:action transport
+(:durative-action transport
     :parameters (?band - band ?container - container ?dock - dock ?dock2 - dock)
-    :precondition (and 
-        ;Hay un container en la banda
-        (on ?container ?band)
-        (direction ?band ?dock ?dock2)
-        (at ?container ?dock)
+    :duration (= ?duration (time-transport ?dock ?dock2))
+    :condition (and 
+        (at start (at ?container ?dock))
+        (over all (on ?container ?band))
+        (over all (direction ?band ?dock ?dock2))
     )
     :effect (and 
-        (not (at ?container ?dock))
-        (at ?container ?dock2)
-        ;Dominio Temporal
-        (increase (total-time-used)
-            (time-transport ?dock ?dock2))
+        (at start (not (at ?container ?dock)))
+        (at end (at ?container ?dock2))
     )
 )
 

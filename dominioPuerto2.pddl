@@ -59,7 +59,7 @@
         (not (free ?crane))
         ;Dominio Temporal
         (increase (total-time-used)
-            (* (weight ?container) (time-per-heigth ?l1)))
+            (* (weight ?container) (time-per-height ?l1)))
         
     )
 )
@@ -91,7 +91,7 @@
         (not (free ?container))
         ;Dominio Temporal
         (increase (total-time-used)
-            (* (weight ?container) (time-per-heigth ?l1)))
+            (* (weight ?container) (time-per-height ?l1)))
     )
 )
 
@@ -119,7 +119,7 @@
         (free ?c1)
         ;Dominio Temporal
         (increase (total-time-used)
-            (* (weight ?c1) (time-per-heigth ?l1)))
+            (* (weight ?c1) (time-per-height ?l1)))
     )
 )
 
@@ -147,7 +147,7 @@
         (free ?container)
         ;Dominio Temporal
         (increase (total-time-used)
-            (* (weight ?container) (time-per-heigth ?level)))
+            (* (weight ?container) (time-per-height ?level)))
     )
 )
 
@@ -174,7 +174,7 @@
         (free ?container)
         ;Dominio Temporal
         (increase (total-time-used)
-            (* (weight ?container) (time-per-heigth ?level)))
+            (* (weight ?container) (time-per-height ?level)))
     )
 )
 

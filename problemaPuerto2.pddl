@@ -73,7 +73,29 @@
         (is-objective c3)
         (is-objective c4)
         (is-objective c7)
-        (is-objective c8)
+        ;;DOMINIO TEMPORAL
+        (= (total-time-used) 0)
+        (= (time-transport dock1 dock2) 10)
+        (= (time-transport dock2 dock1) 10)
+        (= (time-per-height l1) 0.3)
+        (= (time-per-height l2) 0.2)
+        (= (time-per-height l3) 0.1)
+        (= (weight c1) 50)
+        (= (weight c2) 50)
+        (= (weight c3) 50)
+        (= (weight c4) 50)
+        (= (weight c5) 50)
+        (= (weight c6) 50)
+        (= (weight c7) 50)
+        (= (weight c8) 50)
+        (= (weight c9) 50)
+        (= (weight c10) 50)
+        (= (weight c11) 50)
+        (= (time-put-take-band band1) 0.3)
+        (= (time-put-take-band band2) 0.3)
+
+
+
     )
 
     (:goal 
@@ -81,11 +103,9 @@
             (at c3 dock1)
             (at c4 dock1)
             (at c7 dock1)
-            (at c8 dock1)
             (free c3)
             (free c4)
             (free c7)
-            (free c8)
         )
     )
     ;un-comment the following line if metric is needed

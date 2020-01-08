@@ -109,5 +109,5 @@
         )
     )
     ;un-comment the following line if metric is needed
-    ;(:metric minimize (???))
+    (:metric minimize (total-time-used))
 )

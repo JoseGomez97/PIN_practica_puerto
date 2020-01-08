@@ -121,80 +121,62 @@
     )
 )
 
-;TODO
-(:action put-on-ground
+(:durative-action put-on-ground
     :parameters (?crane - crane ?stack - stack ?level - level ?container - container ?dock - dock)
-    :precondition (and 
-        ;container en grua
-        (on ?container ?crane)
-        ;grua y stack en el puerto correcto
-        (at ?crane ?dock)
-        ;el nivel correspondiente no está ocupado
-        (first ?level)
-        (free-lsd ?level ?stack ?dock)
+    :duration (= ?duration (* (weight ?container) (time-per-height ?level)))
+    :condition (and
+        (at start (on ?container ?crane))
+        (at start (free-lsd ?level ?stack ?dock))
+        (over all (at ?crane ?dock))
+        (over all (first ?level))
     )
     :effect (and 
-
-        (not (on ?container ?crane))
-        (free ?crane)
-
-        (on-lsd ?container ?level ?stack ?dock)
-        (not(free-lsd ?level ?stack ?dock))
-        ;free
-        (free ?container)
-        ;Dominio Temporal
-        (increase (total-time-used)
-            (* (weight ?container) (time-per-height ?level)))
+        (at start (not (on ?container ?crane)))
+        (at start (not(free-lsd ?level ?stack ?dock)))
+        (at end(free ?crane))
+        (at end (on-lsd ?container ?level ?stack ?dock))
+        (at end (free ?container))
     )
 )
-;TODO
-(:action put-on-band
+
+(:durative-action put-on-band
     :parameters (?crane - crane ?container - container ?band - band ?dock - dock ?dock2 - dock)
-    :precondition (and 
-        ;La grua tiene que tener el container
-        (on ?container ?crane)
-        ;La grua y el origen de la cinta tienen que estar en el mismo dock
-        (at ?crane ?dock)
-        (direction ?band ?dock ?dock2)
-        ;La cinta no tiene que tener nada
-        (free ?band) 
+    :duration (= ?duration (* (weight ?container) (time-put-take-band ?band)))
+    :condition (and 
+        (at start (on ?container ?crane))
+        (at start (free ?band))
+        (over all (at ?crane ?dock))
+        (over all (direction ?band ?dock ?dock2))
     )
     :effect (and 
-        ;Se deja libre la grua del container
-        (not(on ?container ?crane))
-        (free ?crane)
-        ;Se coloca el container en la cinta
-        (not (free ?band))
-        (on ?container ?band)
-        ;Transporte en la cinta *Anulado en este Dominio para aprovechar el paralelismo de *
+        (at start (not(on ?container ?crane)))
+        (at start (not (free ?band)))
+        (at end (on ?container ?band))
+        (at end (free ?crane))
+        ;Transporte en la cinta *Anulado en este Dominio para aprovechar el paralelismo de los planificadores*
         ;(not (at ?container ?dock))
         ;at ?container ?dock2)
-        ;Dominio Temporal
-        (increase (total-time-used)
-            (* (weight ?container) (time-put-take-band ?band)))
     )
 )
-;TODO
-(:action take-from-band
+
+(:durative-action take-from-band
     :parameters (?band - band ?crane - crane ?container - container ?stack - stack ?level - level ?dock - dock ?dock2 - dock)
-    :precondition (and 
+    :duration (= ?duration (* (weight ?container) (time-put-take-band ?band)))
+    :condition (and 
         ;La grua no esta ocupada
-        (free ?crane)
+        (at start (free ?crane))
         ;Hay un container en la banda
-        (on ?container ?band)
-        (direction ?band ?dock2 ?dock)
+        (at start (on ?container ?band))
+        (over all (direction ?band ?dock2 ?dock))
         ;El container y la grua se encuentran en el mismo dock
-        (at ?container ?dock)
-        (at ?crane ?dock)
+        (over all (at ?container ?dock))
+        (over all (at ?crane ?dock))
     )
     :effect (and 
-        (not (free ?crane))
-        (free ?band)
-        (not(on ?container ?band))
-        (on ?container ?crane)
-        ;Dominio Temporal
-        (increase (total-time-used)
-            (* (weight ?container) (time-put-take-band ?band)))
+        (at start (not (free ?crane)))
+        (at end (free ?band))
+        (at start (not(on ?container ?band)))
+        (at end (on ?container ?crane))
     )
 )
 

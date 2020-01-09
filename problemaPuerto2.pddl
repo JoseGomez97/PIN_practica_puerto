@@ -74,7 +74,6 @@
         (is-objective c4)
         (is-objective c7)
         ;;DOMINIO TEMPORAL
-        (= (total-time-used) 0)
         (= (time-transport dock1 dock2) 10)
         (= (time-transport dock2 dock1) 10)
         (= (time-per-height l1) 0.3)

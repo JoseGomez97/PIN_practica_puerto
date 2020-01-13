@@ -34,6 +34,7 @@
     (slow-burn ?c - crane)
     (total-fuel-used)
     (inverter)
+    (refuel-time)
 )
 
 ;; ACTIONS
@@ -110,7 +111,7 @@
         (over all (next ?l2 ?l1))
         (over all (on-lsd ?c2 ?l2 ?stack ?dock))
         (at start (>= (crane-fuel ?crane)
-            (/ (inverter) (* (weight ?c1) (time-per-height ?l1)))
+            (/ 1 (* (weight ?c1) (time-per-height ?l1)))
         ))
     )
     :effect (and 
@@ -258,6 +259,19 @@
     :effect (and 
         (at start (not (at ?container ?dock)))
         (at end (at ?container ?dock2))
+    )
+)
+
+
+;;NUEVA REGLA para el DOMINIO NUMERICO
+(:durative-action refuel
+    :parameters (?crane - crane)
+    :duration (= ?duration (refuel-time))
+    :condition (and 
+        (at start (free ?crane))
+    )
+    :effect (and 
+        (at end (assign (crane-fuel ?crane) 50))
     )
 )
 

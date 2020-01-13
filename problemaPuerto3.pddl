@@ -74,7 +74,6 @@
         (is-objective c4)
         (is-objective c7)
         ;;DOMINIO TEMPORAL
-        (= (total-time-used) 0)
         (= (time-transport dock1 dock2) 10)
         (= (time-transport dock2 dock1) 10)
         (= (time-per-height l1) 0.3)
@@ -93,11 +92,13 @@
         (= (weight c11) 50)
         (= (time-put-take-band band1) 0.3)
         (= (time-put-take-band band2) 0.3)
+        (= (refuel-time) 50)
 
         (= (crane-fuel crane1) 50)
         (= (crane-fuel crane2) 50)
         (= (total-fuel-used) 0)
         (= (inverter) 10)
+        
     )
 
     (:goal 
@@ -112,7 +113,6 @@
     )
     ;un-comment the following line if metric is needed
     (:metric
-        minimize (total-time)
         minimize (total-fuel-used)
     )
 )

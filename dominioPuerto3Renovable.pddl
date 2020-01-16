@@ -263,7 +263,7 @@
 )
 
 
-;;NUEVA REGLA para el DOMINIO NUMERICO
+;;NUEVA REGLA para el DOMINIO NUMERICO Renovable
 (:durative-action refuel
     :parameters (?crane - crane)
     :duration (= ?duration (refuel-time))

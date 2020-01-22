@@ -1,0 +1,59 @@
+./../PLANIFICADORES/Metric-FF-v2.1/ff -o dominioPuerto1.pddl -f problemaPuerto1-l4s2.pddl -s 0
+
+ff: parsing domain file
+domain 'PUERTO' defined
+ ... done.
+ff: parsing problem file
+problem 'TOWER6' defined
+ ... done.
+
+
+no metric specified.
+
+ff: search configuration is Enforced Hill-Climbing, if that fails then best-first search.
+Metric is plan length.
+NO COST MINIMIZATION (and no cost-minimizing relaxed plans).
+
+Cueing down from goal distance:   10 into depth [1]
+                                   9            [1][2][3][4]
+                                   8            [1][2][3][4]
+                                   7            [1]
+                                   6            [1][2]
+                                   5            [1][2]
+                                   4            [1][2][3]
+                                   3            [1]
+                                   2            [1][2][3]
+                                   1            [1]
+                                   0            
+
+ff: found legal plan as follows
+step    0: TAKE-FROM-STACK CRANE1 C11 C7 S1 L3 L2 DOCK1
+        1: TAKE-FROM-STACK CRANE2 C8 C4 S1 L2 L1 DOCK2
+        2: PUT-ON-BAND CRANE2 C8 BAND2 DOCK2 DOCK1
+        3: PUT-ON-BAND CRANE1 C11 BAND1 DOCK1 DOCK2
+        4: TAKE-FROM-BAND BAND2 CRANE1 C8 DOCK1
+        5: TAKE-FROM-GROUND CRANE2 C4 S1 L1 L2 DOCK2
+        6: PUT-ON-BAND CRANE2 C4 BAND2 DOCK2 DOCK1
+        7: PUT-ON-CONTAINER CRANE1 S2 L3 L2 C8 C10 DOCK1
+        8: TAKE-FROM-BAND BAND2 CRANE1 C4 DOCK1
+        9: PUT-ON-CONTAINER CRANE1 S2 L4 L3 C4 C8 DOCK1
+       10: TAKE-FROM-STACK CRANE2 C6 C2 S2 L4 L3 DOCK2
+       11: PUT-ON-GROUND CRANE2 S1 L1 C6 DOCK2
+       12: TAKE-FROM-STACK CRANE2 C2 C3 S2 L3 L2 DOCK2
+       13: PUT-ON-CONTAINER CRANE2 S1 L2 L1 C2 C6 DOCK2
+       14: TAKE-FROM-STACK CRANE2 C3 C5 S2 L2 L1 DOCK2
+       15: PUT-ON-BAND CRANE2 C3 BAND2 DOCK2 DOCK1
+       16: TAKE-FROM-BAND BAND2 CRANE1 C3 DOCK1
+       17: PUT-GREEN-ON-GREEN CRANE1 S1 L3 L2 C7 C3 DOCK1
+       18: TAKE-FROM-GROUND CRANE2 C5 S2 L1 L2 DOCK2
+       19: PUT-ON-BAND CRANE2 C5 BAND2 DOCK2 DOCK1
+       20: TAKE-FROM-BAND BAND2 CRANE1 C5 DOCK1
+       21: PUT-GREEN-ON-GREEN CRANE1 S1 L4 L3 C3 C5 DOCK1
+
+time spent:    0.00 seconds instantiating 6500 easy, 0 hard action templates
+               0.01 seconds reachability analysis, yielding 275 facts and 3250 actions
+               0.00 seconds creating final representation with 273 relevant facts, 0 relevant fluents
+               0.03 seconds computing LNF
+               0.02 seconds building connectivity graph
+               0.01 seconds searching, evaluating 60 states, to a max depth of 4
+               0.07 seconds total time

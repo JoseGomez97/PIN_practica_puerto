@@ -1,0 +1,47 @@
+./../PLANIFICADORES/Metric-FF-v2.1/ff -o dominioPuerto1.pddl -f problemaPuerto1-l2s3.pddl -s 0
+
+ff: parsing domain file
+domain 'PUERTO' defined
+ ... done.
+ff: parsing problem file
+problem 'TOWER6' defined
+ ... done.
+
+
+no metric specified.
+
+ff: search configuration is Enforced Hill-Climbing, if that fails then best-first search.
+Metric is plan length.
+NO COST MINIMIZATION (and no cost-minimizing relaxed plans).
+
+Cueing down from goal distance:    5 into depth [1][2][3]
+                                   4            [1][2][3][4]
+                                   3            [1]
+                                   2            [1][2][3][4][5][6][7][8][9][10][11][12][13][14][15][16][17][18][19][20][21][22][23][24] --- pruning stopped --- [1][2][3][4][5][6]
+                                   1            [1]
+                                   0            
+
+ff: found legal plan as follows
+step    0: TAKE-FROM-STACK CRANE2 C8 C4 S1 L2 L1 DOCK2
+        1: PUT-ON-BAND CRANE2 C8 BAND2 DOCK2 DOCK1
+        2: TAKE-FROM-BAND BAND2 CRANE1 C8 DOCK1
+        3: TAKE-FROM-STACK CRANE2 C3 C5 S2 L2 L1 DOCK2
+        4: PUT-ON-BAND CRANE2 C3 BAND2 DOCK2 DOCK1
+        5: PUT-ON-BAND CRANE1 C8 BAND1 DOCK1 DOCK2
+        6: TAKE-FROM-BAND BAND2 CRANE1 C3 DOCK1
+        7: PUT-ON-CONTAINER CRANE1 S3 L2 L1 C3 C11 DOCK1
+        8: TAKE-FROM-GROUND CRANE2 C4 S1 L1 L2 DOCK2
+        9: TAKE-FROM-STACK CRANE1 C10 C9 S2 L2 L1 DOCK1
+       10: PUT-ON-BAND CRANE2 C4 BAND2 DOCK2 DOCK1
+       11: TAKE-FROM-BAND BAND1 CRANE2 C8 DOCK2
+       12: PUT-ON-BAND CRANE1 C10 BAND1 DOCK1 DOCK2
+       13: TAKE-FROM-BAND BAND2 CRANE1 C4 DOCK1
+       14: PUT-ON-CONTAINER CRANE1 S2 L2 L1 C4 C9 DOCK1
+
+time spent:    0.00 seconds instantiating 3408 easy, 0 hard action templates
+               0.00 seconds reachability analysis, yielding 227 facts and 1704 actions
+               0.00 seconds creating final representation with 225 relevant facts, 0 relevant fluents
+               0.01 seconds computing LNF
+               0.00 seconds building connectivity graph
+               0.09 seconds searching, evaluating 914 states, to a max depth of 24
+               0.10 seconds total time

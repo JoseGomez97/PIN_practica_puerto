@@ -156,7 +156,7 @@
 
 
 (:action take-from-band
-    :parameters (?band - band ?crane - crane ?container - container ?stack - stack ?level - level ?dock - dock)
+    :parameters (?band - band ?crane - crane ?container - container ?dock - dock)
     :precondition (and 
         ;La grua no esta ocupada
         (free ?crane)

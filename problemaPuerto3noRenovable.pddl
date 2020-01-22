@@ -92,12 +92,10 @@
         (= (weight c11) 50)
         (= (time-put-take-band band1) 0.3)
         (= (time-put-take-band band2) 0.3)
-        (= (refuel-time) 50)
-
+        
         (= (crane-fuel crane1) 50)
         (= (crane-fuel crane2) 50)
         (= (total-fuel-used) 0)
-        (= (inverter) 10)
         
     )
 

@@ -10,5 +10,5 @@
 ```
 - Iniciar planificado optic-clp
 ```bash
-    ./../PLANIFICADORES/optic-clp/optic-clp dominioPuerto.pddl problemaPuerto.pddl
+    ./../PLANIFICADORES/optic-clp dominioPuerto.pddl problemaPuerto.pddl
 ```

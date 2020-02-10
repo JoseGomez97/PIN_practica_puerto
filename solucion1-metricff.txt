@@ -1,0 +1,45 @@
+./../PLANIFICADORES/Metric-FF-v2.1/ff -o dominioPuerto1.pddl -f problemaPuerto1.pddl -s 0 
+
+ff: parsing domain file
+domain 'PUERTO' defined
+ ... done.
+ff: parsing problem file
+problem 'TOWER6' defined
+ ... done.
+
+
+no metric specified.
+
+ff: search configuration is Enforced Hill-Climbing, if that fails then best-first search.
+Metric is plan length.
+NO COST MINIMIZATION (and no cost-minimizing relaxed plans).
+
+Cueing down from goal distance:    6 into depth [1][2]
+                                   5            [1][2]
+                                   4            [1][2][3]
+                                   3            [1]
+                                   2            [1][2][3]
+                                   1            [1]
+                                   0            
+
+ff: found legal plan as follows
+step    0: TAKE-FROM-STACK CRANE2 C8 C4 S1 L2 L1 DOCK2
+        1: PUT-ON-CONTAINER CRANE2 S3 L2 L1 C8 C6 DOCK2
+        2: TAKE-FROM-STACK CRANE2 C2 C3 S2 L3 L2 DOCK2
+        3: PUT-ON-CONTAINER CRANE2 S3 L3 L2 C2 C8 DOCK2
+        4: TAKE-FROM-STACK CRANE2 C3 C5 S2 L2 L1 DOCK2
+        5: PUT-ON-BAND CRANE2 C3 BAND2 DOCK2 DOCK1
+        6: TAKE-FROM-BAND BAND2 CRANE1 C3 DOCK1
+        7: PUT-GREEN-ON-GREEN CRANE1 S1 L3 L2 C7 C3 DOCK1
+        8: TAKE-FROM-GROUND CRANE2 C4 S1 L1 L2 DOCK2
+        9: PUT-ON-BAND CRANE2 C4 BAND2 DOCK2 DOCK1
+       10: TAKE-FROM-BAND BAND2 CRANE1 C4 DOCK1
+       11: PUT-ON-CONTAINER CRANE1 S3 L2 L1 C4 C11 DOCK1
+
+time spent:    0.03 seconds instantiating 6420 easy, 0 hard action templates
+               0.00 seconds reachability analysis, yielding 299 facts and 3210 actions
+               0.01 seconds creating final representation with 297 relevant facts, 0 relevant fluents
+               0.03 seconds computing LNF
+               0.00 seconds building connectivity graph
+               0.00 seconds searching, evaluating 27 states, to a max depth of 3
+               0.07 seconds total time

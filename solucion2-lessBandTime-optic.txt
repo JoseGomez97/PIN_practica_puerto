@@ -1,0 +1,45 @@
+./../PLANIFICADORES/optic-clp/optic-clp dominioPuerto2.pddl problemaPuerto2-lessBandTime.pddl
+Number of literals: 299
+Constructing lookup tables: [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Post filtering unreachable actions:  [10%] [20%] [30%] [40%] [50%] [60%] [70%] [80%] [90%] [100%]
+Seeing if metric is defined in terms of task vars or a minimal value of makespan
+- Yes it is
+Recognised a monotonic-change-induced limit on -1.000*<special>
+- Must be >=  the metric
+For limits: literal goal index 0, fact (at c3 dock1), is static or a precondition
+For limits: literal goal index 1, fact (at c4 dock1), is static or a precondition
+For limits: literal goal index 2, fact (at c7 dock1), is static or a precondition
+For limits: literal goal index 3, fact (free c3), is static or a precondition
+For limits: literal goal index 4, fact (free c4), is static or a precondition
+For limits: literal goal index 5, fact (free c7), is static or a precondition
+All the ground actions in this problem are compression-safe
+Initial heuristic = 8.000, admissible cost estimate 56.004
+b (7.000 | 21.003)b (6.000 | 41.003)b (5.000 | 46.003)b (4.000 | 56.003)b (3.000 | 71.004)b (1.000 | 126.008)(G)
+; LP calculated the cost
+
+; Plan found with metric 136.009
+; Theoretical reachable cost 136.009
+; States evaluated so far: 49
+; States pruned based on pre-heuristic cost lower bound: 0
+; Time 0.50
+0.000: (take-from-stack crane2 c2 c3 s2 l3 l2 dock2)  [10.000]
+10.001: (put-on-band crane2 c2 band2 dock2 dock1)  [5.000]
+15.002: (take-from-stack crane2 c3 c5 s2 l2 l1 dock2)  [20.000]
+15.002: (transport band2 c2 dock2 dock1)  [1.000]
+16.003: (take-from-band band2 crane1 c2 s1 l1 dock1 dock2)  [5.000]
+21.004: (put-on-band crane1 c2 band1 dock1 dock2)  [5.000]
+35.003: (put-on-band crane2 c3 band2 dock2 dock1)  [5.000]
+40.003: (transport band2 c3 dock2 dock1)  [1.000]
+40.004: (take-from-stack crane2 c8 c4 s1 l2 l1 dock2)  [20.000]
+41.003: (take-from-band band2 crane1 c3 s1 l1 dock1 dock2)  [5.000]
+46.004: (put-on-container crane1 s2 l3 l2 c3 c10 dock1)  [10.000]
+60.005: (put-on-band crane2 c8 band2 dock2 dock1)  [5.000]
+65.005: (transport band2 c8 dock2 dock1)  [1.000]
+65.006: (take-from-ground crane2 c4 s1 l1 l2 dock2)  [30.000]
+66.005: (take-from-band band2 crane1 c8 s1 l1 dock1 dock2)  [5.000]
+71.006: (put-on-container crane1 s1 l3 l2 c8 c7 dock1)  [10.000]
+95.007: (put-on-band crane2 c4 band2 dock2 dock1)  [5.000]
+100.007: (transport band2 c4 dock2 dock1)  [1.000]
+101.007: (take-from-band band2 crane1 c4 s1 l1 dock1 dock2)  [5.000]
+106.008: (put-on-container crane1 s3 l2 l1 c4 c11 dock1)  [20.000]
+126.009: (take-from-stack crane1 c8 c7 s1 l3 l2 dock1)  [10.000]
